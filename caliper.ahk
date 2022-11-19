@@ -50,20 +50,17 @@ makeCaliper(set:=0) {
     global GdipOBJ, active_Draw, calArray, scale
 	MouseGetPos,mx,my
 
-	Gdip_GraphicsClear(GdipOBJ.G)
+    drawCalipers()
+
     num := calArray.length()
-    Loop, % num                                                                         ; Draw saved calipers
-    {
-    	Gdip_DrawLine(GdipOBJ.G, GdipOBJ.Pen, calArray[A_Index].X, GdipOBJ.Y, calArray[A_Index].X, GdipOBJ.H)
-    }
-    if (num) {
+    if (num) {                                                                          ; Draw Hline when first line dropped
         dx := Abs(calArray[1].X - mx)
         Gdip_DrawLine(GdipOBJ.G, GdipOBJ.Pen, calArray[1].X, my, mx, my)
         ms := round(dx/scale)
         bpm := round(60000/ms)
         ToolTip, % (scale="") ? dx " px" : ms " ms`n" bpm " bpm"
     }
-    if (num=2) {
+    if (num=2) {                                                                        ; Done when second line drops
         active_Draw := 0
         SetTimer, calDrop, Off
         SetTimer, makeCaliper, Off
@@ -74,8 +71,17 @@ makeCaliper(set:=0) {
         calArray.push({X:mx,Y:my})                                                      ; Drop next caliper
     }
 
-	Gdip_DrawLine(GdipOBJ.G, GdipOBJ.Pen, mx, GdipOBJ.Y, mx, GdipOBJ.H)                 ; Draw live caliper
-	UpdateLayeredWindow(GdipOBJ.hwnd, GdipOBJ.hdc)                                      ; Refresh viewport
+drawCalipers() {
+    global GdipOBJ, calArray
+
+	Gdip_GraphicsClear(GdipOBJ.G)
+    Loop, % calArray.length()                                                           ; Draw saved calipers
+    {
+        drawVline(calArray[A_Index].X)
+    }
+    Return
+}
+
 drawVline(X) {
     global GdipOBJ
 
