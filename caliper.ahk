@@ -99,6 +99,16 @@ Ctrl::
     SetTimer, calDrop, 50
 Return
 
+FindClosest(mx,my) {
+    threshold := 20
+    for key,val in calArray {
+        if Abs(val.X-mx) < threshold {
+            best := key
+        }
+    }
+    Return best
+}
+
 Layered_Window_SetUp(Smoothing,Window_X,Window_Y,Window_W,Window_H,Window_Name:=1,Window_Options:="") {
     Layered:={}
     Layered.W:=Window_W
