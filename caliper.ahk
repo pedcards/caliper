@@ -16,16 +16,14 @@ CoordMode, Mouse, Screen
 SetWorkingDir %A_ScriptDir%
 SetTitleMatchMode, 2
 
-global MyGui := {W: A_ScreenWidth ,H: A_ScreenHeight }
-global GdipOBJ:={X: 0 ,Y: 0 ,W: A_ScreenWidth, H: A_ScreenHeight } ; W: MyGui.W ,H: MyGui.H }
+global GdipOBJ:={X: 0 ,Y: 0 ,W: A_ScreenWidth, H: A_ScreenHeight } 
 global active_Draw:=0
 global calArray := {}
 global scale := ""
 
 Gui, 1: -Caption +E0x80000 +LastFound +AlwaysOnTop +ToolWindow +OwnDialogs
-Gui, 1:Show, Maximize ; % "w" MyGui.W " h" MyGui.H
+Gui, 1:Show, Maximize
 GdipOBJ := Layered_Window_SetUp(4,GdipOBJ.X,GdipOBJ.Y,GdipOBJ.W,GdipOBJ.H,2,"-Caption -DPIScale +Parent1")
-; UpdateLayeredWindow(GdipOBJ.hwnd, GdipOBJ.hdc, GdipOBJ.X, GdipOBJ.Y, GdipOBJ.W, GdipOBJ.H)
 GdipOBJ.Pen:=New_Pen("FF0000",,1)
 
 Gui, MainGUI:Add, Button, gCalibrate , Calibrate
@@ -152,9 +150,7 @@ Create_Layered_GUI(Layered)
 }
 
 New_Pen(colour:="000000",Alpha:="FF",Width:= 5) {
-    ;~ static Hellbent_Pen:=[]
     new_colour := "0x" Alpha colour 
-    ;~ Hellbent_Pen[Hellbent_Pen.Length()+1]:=Gdip_CreatePen(New_Colour,Width)
     return Gdip_CreatePen(New_Colour,Width)
 }
 
