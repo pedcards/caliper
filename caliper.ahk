@@ -88,7 +88,15 @@ Calibrate() {
 }
 
 March() {
-
+    if (calArray.length()<2) {
+        Return
+    }
+    if (calArray[1].X > calArray[2].X) {
+        t := calArray.RemoveAt(1)
+        calArray.Push(t)
+    }
+    dx := Abs(calArray[2].X-calArray[1].X)
+    Return
 }
 
 #If (active_Draw=0) 
