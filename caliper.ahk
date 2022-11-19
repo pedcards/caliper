@@ -20,11 +20,7 @@ global MyGui := {W: A_ScreenWidth ,H: A_ScreenHeight }
 global GdipOBJ:={X: 0 ,Y: 0 ,W: A_ScreenWidth, H: A_ScreenHeight } ; W: MyGui.W ,H: MyGui.H }
 global active_Draw:=0
 global calArray := {}
-
-Pixels := 96
-NumUnits := 1
-Units := "Inches"
-scaleFactor := NumUnits/Pixels ; .568 ;your calibration factor to convert pixels to units
+global scale := ""
 
 Gui, 1: -Caption +E0x80000 +LastFound +AlwaysOnTop +ToolWindow +OwnDialogs
 Gui, 1:Show, Maximize ; % "w" MyGui.W " h" MyGui.H
@@ -32,9 +28,8 @@ GdipOBJ := Layered_Window_SetUp(4,GdipOBJ.X,GdipOBJ.Y,GdipOBJ.W,GdipOBJ.H,2,"-Ca
 ; UpdateLayeredWindow(GdipOBJ.hwnd, GdipOBJ.hdc, GdipOBJ.X, GdipOBJ.Y, GdipOBJ.W, GdipOBJ.H)
 GdipOBJ.Pen:=New_Pen("FF0000",,1)
 
-Gui, MainGUI:Add, Button, gStartCaliper , START
-Gui, MainGUI:Add, Button, gStartCaliper , Calibrate
-Gui, MainGUI:Add, Button, gStartCaliper , March
+Gui, MainGUI:Add, Button, gCalibrate , Calibrate
+Gui, MainGUI:Add, Button, gMarch , March
 Gui, MainGUI:Show, x1600 w120, TC Calipers
 Gui, MainGUI:+AlwaysOnTop -MaximizeBox -MinimizeBox
 
@@ -54,7 +49,6 @@ calDrop() {
 
 drawCaliper(set:=0) {
 	MouseGetPos,mx,my
-    ToolTip, [%mx%:%my%]
 
 	Gdip_GraphicsClear(GdipOBJ.G)
     num := calArray.length()
@@ -63,7 +57,11 @@ drawCaliper(set:=0) {
     	Gdip_DrawLine(GdipOBJ.G, GdipOBJ.Pen, calArray[A_Index].X, GdipOBJ.Y, calArray[A_Index].X, GdipOBJ.H)
     }
     if (num) {
+        dx := Abs(calArray[1].X - mx)
         Gdip_DrawLine(GdipOBJ.G, GdipOBJ.Pen, calArray[1].X, my, mx, my)
+        ms := round(dx/scale)
+        bpm := round(60000/ms)
+        ToolTip, % (scale="") ? dx " px" : ms " ms`n" bpm " bpm"
     }
     if (num=2) {
         active_Draw := 0
@@ -80,6 +78,17 @@ drawCaliper(set:=0) {
 	UpdateLayeredWindow(GdipOBJ.hwnd, GdipOBJ.hdc)                                      ; Refresh viewport
 
     Return
+}
+
+Calibrate() {
+    InputBox, ms, Calibration, Enter Calibration (ms), , , , , , , , 1000
+    dx := Abs(calArray[1].X - calArray[2].X)
+    scale := dx/ms
+    Return
+}
+
+March() {
+
 }
 
 #If (active_Draw=0) 
