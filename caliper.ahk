@@ -11,6 +11,7 @@
 #MaxMem 128
 #Include %A_ScriptDir%\includes
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
+CoordMode, Mouse, Screen
 
 SetWorkingDir %A_ScriptDir%
 SetTitleMatchMode, 2
@@ -18,6 +19,7 @@ SetTitleMatchMode, 2
 global MyGui := {W: A_ScreenWidth ,H: A_ScreenHeight }
 global GdipOBJ:={X: 0 ,Y: 0 ,W: A_ScreenWidth, H: A_ScreenHeight } ; W: MyGui.W ,H: MyGui.H }
 global active_Draw:=0
+global calArray := {}
 
 Pixels := 96
 NumUnits := 1
@@ -28,64 +30,60 @@ Gui, 1: -Caption +E0x80000 +LastFound +AlwaysOnTop +ToolWindow +OwnDialogs
 Gui, 1:Show, Maximize ; % "w" MyGui.W " h" MyGui.H
 GdipOBJ := Layered_Window_SetUp(4,GdipOBJ.X,GdipOBJ.Y,GdipOBJ.W,GdipOBJ.H,2,"-Caption -DPIScale +Parent1")
 ; UpdateLayeredWindow(GdipOBJ.hwnd, GdipOBJ.hdc, GdipOBJ.X, GdipOBJ.Y, GdipOBJ.W, GdipOBJ.H)
-MyPen:=New_Pen("FF0000",,5)
+GdipOBJ.Pen:=New_Pen("FF0000",,1)
 
-MainLoop:
-{
+Gui, MainGUI:Add, Button, gStartCaliper , START
+Gui, MainGUI:Add, Button, gStartCaliper , Calibrate
+Gui, MainGUI:Add, Button, gStartCaliper , March
+Gui, MainGUI:Show, x1600 w120, TC Calipers
+Gui, MainGUI:+AlwaysOnTop -MaximizeBox -MinimizeBox
 
-}
+startCaliper() {
+    ; SetTimer, updatePos,50
+    SetTimer, drawCaliper,50
 
-ExitApp
-
-updatePos() {
-	mouseGetPos,x,y
-	dx := x-sx
-	dy := sy-y
-	dist := round(  ((dx)**2 + (dy)**2) **.5  ,3)
-	distCalibrated := round(dist * scaleFactor,3)
-	tooltip [%dx%:%dy%]`n%dist% px`n%distCalibrated% %units%
-    
     Return
 }
 
-DrawStuff:
-	Gdip_GraphicsClear(GdipOBJ.G)
-	MouseGetPos,ex,ey
-	Gdip_DrawLine(GdipOBJ.G, myPen, sx, sy, ex, ey)
-	UpdateLayeredWindow(GdipOBJ.hwnd, GdipOBJ.hdc)
-	if(GETKEYSTATE("Shift")){
-		active_Draw:=0
-		setTimer updatePos, off
-		SetTimer,DrawStuff,off
-		tooltip Distance measured is : %distCalibrated% %units%  
-		clipboard := distCalibrated
-;		Gdip_DeletePen(myPen)
-	}
-	if(GETKEYSTATE("Alt")){
-		active_Draw:=0
-		setTimer updatePos, off
-		SetTimer,DrawStuff,off
-		ToolTip
-		Gdip_GraphicsClear(GdipOBJ.G)
-		UpdateLayeredWindow(GdipOBJ.hwnd, GdipOBJ.hdc)
-		clipboard := distCalibrated
-		GuiControl, Calibrate:, Pixels, %dist%
-	    Gui, Calibrate:Show, , Scale Calibration
-	}
-Return
-
-#If (active_Draw=0)
-{
-    ^LButton::
-    {
-        active_Draw := 1
-        MouseGetPos,sx,sy ; start position for measurement
-        SetTimer, updatePos,50
-        SetTimer, DrawStuff,50
-
-        Return
+calDrop() {
+    if (GetKeyState("Ctrl","P")=0) {                                                    ; Key released
+        drawCaliper(1)                                                                  ; set caliper
     }
+    Return
 }
+
+drawCaliper(set:=0) {
+	MouseGetPos,mx,my
+    ToolTip, [%mx%:%my%]
+
+	Gdip_GraphicsClear(GdipOBJ.G)
+    num := calArray.length()
+    Loop, % num                                                                         ; Draw saved calipers
+    {
+    	Gdip_DrawLine(GdipOBJ.G, GdipOBJ.Pen, calArray[A_Index].X, GdipOBJ.Y, calArray[A_Index].X, GdipOBJ.H)
+    }
+    if (num) {
+        Gdip_DrawLine(GdipOBJ.G, GdipOBJ.Pen, calArray[1].X, my, mx, my)
+    }
+    if (num=2) {
+        SetTimer, calDrop, Off
+        SetTimer, drawCaliper, Off
+    }
+
+    if (set) {
+        SetTimer, calDrop, Off
+        calArray.push({X:mx,Y:my})                                                      ; Drop next caliper
+    }
+    if (GetKeyState("Ctrl")) {                                                          ; Ctrl pressed,
+        SetTimer, calDrop, 50                                                           ; start waiting for release
+    }
+
+	Gdip_DrawLine(GdipOBJ.G, GdipOBJ.Pen, mx, GdipOBJ.Y, mx, GdipOBJ.H)                 ; Draw live caliper
+	UpdateLayeredWindow(GdipOBJ.hwnd, GdipOBJ.hdc)                                      ; Refresh viewport
+
+    Return
+}
+
 Layered_Window_SetUp(Smoothing,Window_X,Window_Y,Window_W,Window_H,Window_Name:=1,Window_Options:="") {
     Layered:={}
     Layered.W:=Window_W
