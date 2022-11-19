@@ -39,7 +39,7 @@ Gui, MainGUI:Show, x1600 w120, TC Calipers
 Gui, MainGUI:+AlwaysOnTop -MaximizeBox -MinimizeBox
 
 startCaliper() {
-    ; SetTimer, updatePos,50
+    active_Draw := 1
     SetTimer, drawCaliper,50
 
     Return
@@ -66,6 +66,7 @@ drawCaliper(set:=0) {
         Gdip_DrawLine(GdipOBJ.G, GdipOBJ.Pen, calArray[1].X, my, mx, my)
     }
     if (num=2) {
+        active_Draw := 0
         SetTimer, calDrop, Off
         SetTimer, drawCaliper, Off
     }
@@ -74,15 +75,29 @@ drawCaliper(set:=0) {
         SetTimer, calDrop, Off
         calArray.push({X:mx,Y:my})                                                      ; Drop next caliper
     }
-    if (GetKeyState("Ctrl")) {                                                          ; Ctrl pressed,
-        SetTimer, calDrop, 50                                                           ; start waiting for release
-    }
 
 	Gdip_DrawLine(GdipOBJ.G, GdipOBJ.Pen, mx, GdipOBJ.Y, mx, GdipOBJ.H)                 ; Draw live caliper
 	UpdateLayeredWindow(GdipOBJ.hwnd, GdipOBJ.hdc)                                      ; Refresh viewport
 
     Return
 }
+
+#If (active_Draw=0) 
+Ctrl::
+{
+    if (calArray.length()) {                                                            ; Calipers present, grab something
+        MouseGetPos, mx, my
+        ToolTip, Grab this
+    } else {                                                                            ; No calipers, make them
+        startCaliper()
+    }
+}
+Return
+
+#If (active_Draw=1)
+Ctrl::
+    SetTimer, calDrop, 50
+Return
 
 Layered_Window_SetUp(Smoothing,Window_X,Window_Y,Window_W,Window_H,Window_Name:=1,Window_Options:="") {
     Layered:={}
