@@ -98,10 +98,41 @@ drawVline(X) {
 Calibrate() {
     global calArray, scale
 
-    InputBox, ms, Calibration, Enter Calibration (ms), , , , , , , , 1000
+    Gui, cWin:Add, Text, w200 Center, Select calibration measurement
+    Gui, cWin:Add, Button, w200 gc1000, 1000 ms
+    Gui, cWin:Add, Button, w200 gc2000, 2000 ms
+    Gui, cWin:Add, Button, w200 gc3000, 3000 ms
+    Gui, cWin:Add, Button, w200 gcOther, Other
+    Gui, cWin:Show, , Calibrate
+    Gui, cWin:+AlwaysOnTop -MaximizeBox -MinimizeBox
+
+    WinWaitClose, Calibrate
     dx := Abs(calArray[1].X - calArray[2].X)
     scale := dx/ms
     Return
+    
+    c1000:
+    {
+        ms:=1000
+        Gui, cWin:Cancel
+        Return
+    }
+    c2000:
+    {
+        ms:=2000
+        Gui, cWin:Cancel
+        Return
+    }
+    c3000:
+    {
+        ms:=3000
+        Gui, cWin:Cancel
+        Return
+    }
+    cOther:
+    {
+        Return
+    }
 }
 
 March() {
