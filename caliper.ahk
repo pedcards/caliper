@@ -88,9 +88,9 @@ Ctrl::
     if (calArray.length()) {                                                            ; Calipers present, grab something
         MouseGetPos, mx, my
         ToolTip, Grab this
-    } else {                                                                            ; No calipers, make them
-        startCaliper()
+        calArray.RemoveAt(FindClosest(mx,my))
     }
+    startCaliper()
 }
 Return
 
