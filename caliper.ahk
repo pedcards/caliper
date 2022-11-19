@@ -34,19 +34,19 @@ Gui, MainGUI:+AlwaysOnTop -MaximizeBox -MinimizeBox
 startCaliper() {
     global active_Draw
     active_Draw := 1
-    SetTimer, drawCaliper,50
+    SetTimer, makeCaliper,50
 
     Return
 }
 
 calDrop() {
     if (GetKeyState("Ctrl","P")=0) {                                                    ; Key released
-        drawCaliper(1)                                                                  ; set caliper
+        makeCaliper(1)                                                                  ; set caliper
     }
     Return
 }
 
-drawCaliper(set:=0) {
+makeCaliper(set:=0) {
     global GdipOBJ, active_Draw, calArray, scale
 	MouseGetPos,mx,my
 
@@ -66,7 +66,7 @@ drawCaliper(set:=0) {
     if (num=2) {
         active_Draw := 0
         SetTimer, calDrop, Off
-        SetTimer, drawCaliper, Off
+        SetTimer, makeCaliper, Off
     }
 
     if (set) {
