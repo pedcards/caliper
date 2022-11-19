@@ -16,10 +16,10 @@ CoordMode, Mouse, Screen
 SetWorkingDir %A_ScriptDir%
 SetTitleMatchMode, 2
 
-global GdipOBJ:={X: 0 ,Y: 0 ,W: A_ScreenWidth, H: A_ScreenHeight } 
-global active_Draw:=0
-global calArray := {}
-global scale := ""
+GdipOBJ:={X: 0 ,Y: 0 ,W: A_ScreenWidth, H: A_ScreenHeight } 
+active_Draw:=0
+calArray := {}
+scale := ""
 
 Gui, 1: -Caption +E0x80000 +LastFound +AlwaysOnTop +ToolWindow +OwnDialogs
 Gui, 1:Show, Maximize
@@ -32,6 +32,7 @@ Gui, MainGUI:Show, x1600 w120, TC Calipers
 Gui, MainGUI:+AlwaysOnTop -MaximizeBox -MinimizeBox
 
 startCaliper() {
+    global active_Draw
     active_Draw := 1
     SetTimer, drawCaliper,50
 
@@ -46,6 +47,7 @@ calDrop() {
 }
 
 drawCaliper(set:=0) {
+    global GdipOBJ, active_Draw, calArray, scale
 	MouseGetPos,mx,my
 
 	Gdip_GraphicsClear(GdipOBJ.G)
@@ -79,6 +81,8 @@ drawCaliper(set:=0) {
 }
 
 Calibrate() {
+    global calArray, scale
+
     InputBox, ms, Calibration, Enter Calibration (ms), , , , , , , , 1000
     dx := Abs(calArray[1].X - calArray[2].X)
     scale := dx/ms
@@ -86,6 +90,8 @@ Calibrate() {
 }
 
 March() {
+    global calArray
+
     if (calArray.length()<2) {
         Return
     }
