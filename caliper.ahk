@@ -48,7 +48,12 @@ calDrop() {
 
 makeCaliper(set:=0) {
     global GdipOBJ, active_Draw, calArray, scale
+
 	MouseGetPos,mx,my
+    if (set) {
+        SetTimer, calDrop, Off
+        calArray.push({X:mx,Y:my})                                                      ; Drop caliper line
+    }
 
     drawCalipers()
 
@@ -66,10 +71,11 @@ makeCaliper(set:=0) {
         SetTimer, makeCaliper, Off
     }
 
-    if (set) {
-        SetTimer, calDrop, Off
-        calArray.push({X:mx,Y:my})                                                      ; Drop next caliper
-    }
+    drawVline(mx)                                                                       ; Draw live caliper
+	UpdateLayeredWindow(GdipOBJ.hwnd, GdipOBJ.hdc)                                      ; Refresh viewport
+
+    Return
+}
 
 drawCalipers() {
     global GdipOBJ, calArray
