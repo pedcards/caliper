@@ -76,7 +76,10 @@ makeCaliper(set:=0) {
 
 	Gdip_DrawLine(GdipOBJ.G, GdipOBJ.Pen, mx, GdipOBJ.Y, mx, GdipOBJ.H)                 ; Draw live caliper
 	UpdateLayeredWindow(GdipOBJ.hwnd, GdipOBJ.hdc)                                      ; Refresh viewport
+drawVline(X) {
+    global GdipOBJ
 
+    Gdip_DrawLine(GdipOBJ.G, GdipOBJ.Pen, X, GdipOBJ.Y, X, GdipOBJ.H)
     Return
 }
 
