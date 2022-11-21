@@ -19,6 +19,7 @@ SetTitleMatchMode, 2
 GdipOBJ:={X: 0 ,Y: 0 ,W: A_ScreenWidth, H: A_ScreenHeight } 
 active_Draw:=0
 calArray := {}
+mLast := {}
 scale := ""
 
 Gui, 1: -Caption +E0x80000 +LastFound +AlwaysOnTop +ToolWindow +OwnDialogs
@@ -47,12 +48,13 @@ calDrop() {
 }
 
 makeCaliper(set:=0) {
-    global GdipOBJ, active_Draw, calArray, scale
+    global GdipOBJ, active_Draw, calArray, mLast, scale
 
 	MouseGetPos,mx,my
+    mLast := {X:mx,Y:my}
     if (set) {
         SetTimer, calDrop, Off
-        calArray.push({X:mx,Y:my})                                                      ; Drop caliper line
+        calArray.push(mLast)                                                            ; Drop caliper line
     }
 
     drawCalipers()
