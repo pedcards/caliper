@@ -172,9 +172,9 @@ FindClosest(mx,my) {
 }
 
 #If (active_Draw=0) 
-Ctrl::
+^LButton::
 {
-    if (calArray.length()) {                                                            ; Calipers present, grab something
+    if (calArray.length()=2) {                                                          ; Calipers present, grab something
         MouseGetPos, mx, my
         ToolTip, Grab this
         calArray.RemoveAt(FindClosest(mx,my))
@@ -184,9 +184,12 @@ Ctrl::
 Return
 
 #If (active_Draw=1)
-Ctrl::
+LButton Up::
+{
     SetTimer, calDrop, 50
-Return
+    Return
+}
+
 
 Layered_Window_SetUp(Smoothing,Window_X,Window_Y,Window_W,Window_H,Window_Name:=1,Window_Options:="") {
     Layered:={}
