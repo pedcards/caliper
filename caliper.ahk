@@ -40,6 +40,12 @@ startCaliper() {
     Return
 }
 
+dropCaliper() {
+    global calArray, mLast
+    calArray.push(mLast)                                                                ; Drop caliper line
+    Return
+}
+
 makeCaliper(set:=0) {
     global GdipOBJ, active_Draw, calArray, mLast, scale
 
@@ -173,7 +179,7 @@ Return
 #If (active_Draw=1)
 LButton Up::
 {
-    calArray.push(mLast)                                                                ; Drop caliper line
+    dropCaliper()
     Return
 }
 
