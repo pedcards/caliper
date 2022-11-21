@@ -53,7 +53,7 @@ dropCaliper() {
     Return
 }
 
-makeCaliper(set:=0) {
+makeCaliper() {
     global GdipOBJ, active_Draw, calArray, mLast, scale
 
 	MouseGetPos,mx,my
