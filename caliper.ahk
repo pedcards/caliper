@@ -40,29 +40,17 @@ startCaliper() {
     Return
 }
 
-calDrop() {
-    if (GetKeyState("Ctrl","P")=0) {                                                    ; Key released
-        makeCaliper(1)                                                                  ; set caliper
-    }
-    Return
-}
-
 makeCaliper(set:=0) {
     global GdipOBJ, active_Draw, calArray, mLast, scale
 
 	MouseGetPos,mx,my
     mLast := {X:mx,Y:my}
-    if (set) {
-        SetTimer, calDrop, Off
-        calArray.push(mLast)                                                            ; Drop caliper line
-    }
 
     drawCalipers()
 
     num := calArray.length()
     if (num) {                                                                          ; Draw Hline when first line dropped
         dx := Abs(calArray[1].X - mx)
-        ; Gdip_DrawLine(GdipOBJ.G, GdipOBJ.Pen, calArray[1].X, my, mx, my)
         drawHline(calArray[1].x,mx,my)
         ms := round(dx/scale)
         bpm := round(60000/ms)
@@ -70,7 +58,6 @@ makeCaliper(set:=0) {
     }
     if (num=2) {                                                                        ; Done when second line drops
         active_Draw := 0
-        SetTimer, calDrop, Off
         SetTimer, makeCaliper, Off
     }
 
@@ -186,7 +173,7 @@ Return
 #If (active_Draw=1)
 LButton Up::
 {
-    SetTimer, calDrop, 50
+    calArray.push(mLast)                                                                ; Drop caliper line
     Return
 }
 
