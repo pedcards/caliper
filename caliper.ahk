@@ -33,8 +33,15 @@ Gui, MainGUI:Show, x1600 w120, TC Calipers
 Gui, MainGUI:+AlwaysOnTop -MaximizeBox -MinimizeBox
 
 startCaliper() {
-    global active_Draw
+    global calArray, active_Draw
     active_Draw := 1
+    
+    if (calArray.length()=2) {                                                          ; Calipers present, grab something
+        MouseGetPos, mx, my
+        ToolTip, Grab this
+        calArray.RemoveAt(FindClosest(mx,my))
+    }
+
     SetTimer, makeCaliper,50
 
     Return
@@ -167,14 +174,9 @@ FindClosest(mx,my) {
 #If (active_Draw=0) 
 ^LButton::
 {
-    if (calArray.length()=2) {                                                          ; Calipers present, grab something
-        MouseGetPos, mx, my
-        ToolTip, Grab this
-        calArray.RemoveAt(FindClosest(mx,my))
-    }
     startCaliper()
+    Return
 }
-Return
 
 #If (active_Draw=1)
 LButton Up::
