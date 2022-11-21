@@ -62,7 +62,8 @@ makeCaliper(set:=0) {
     num := calArray.length()
     if (num) {                                                                          ; Draw Hline when first line dropped
         dx := Abs(calArray[1].X - mx)
-        Gdip_DrawLine(GdipOBJ.G, GdipOBJ.Pen, calArray[1].X, my, mx, my)
+        ; Gdip_DrawLine(GdipOBJ.G, GdipOBJ.Pen, calArray[1].X, my, mx, my)
+        drawHline(calArray[1].x,mx,my)
         ms := round(dx/scale)
         bpm := round(60000/ms)
         ToolTip, % (scale="") ? dx " px" : ms " ms`n" bpm " bpm"
@@ -94,6 +95,13 @@ drawVline(X) {
     global GdipOBJ
 
     Gdip_DrawLine(GdipOBJ.G, GdipOBJ.Pen, X, GdipOBJ.Y, X, GdipOBJ.H)
+    Return
+}
+
+drawHline(x1,x2,y) {
+    global GdipOBJ
+    
+    Gdip_DrawLine(GdipOBJ.G, GdipOBJ.Pen, x1, y, x2, y)
     Return
 }
 
