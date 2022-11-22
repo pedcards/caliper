@@ -33,6 +33,12 @@ Gui, MainGUI:Add, Button, gMarch , March
 Gui, MainGUI:Show, x1600 w120, % GuiTitle
 Gui, MainGUI:+AlwaysOnTop -MaximizeBox -MinimizeBox
 
+MainGUIclose:
+{
+	WinWaitClose, % GuiTitle
+	ExitApp
+}
+
 startCaliper() {
 	global calArray, active_Draw
 	active_Draw := 1
