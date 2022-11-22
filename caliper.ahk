@@ -22,6 +22,7 @@ calArray := {}
 mLast := {}
 scale := ""
 
+GuiTitle := "TC Calipers"
 Gui, 1: -Caption +E0x80000 +LastFound +AlwaysOnTop +ToolWindow +OwnDialogs
 Gui, 1:Show, Maximize
 GdipOBJ := Layered_Window_SetUp(4,GdipOBJ.X,GdipOBJ.Y,GdipOBJ.W,GdipOBJ.H,2,"-Caption -DPIScale +Parent1")
@@ -29,7 +30,7 @@ GdipOBJ.Pen:=New_Pen("FF0000",,1)
 
 Gui, MainGUI:Add, Button, gCalibrate , Calibrate
 Gui, MainGUI:Add, Button, gMarch , March
-Gui, MainGUI:Show, x1600 w120, TC Calipers
+Gui, MainGUI:Show, x1600 w120, % GuiTitle
 Gui, MainGUI:+AlwaysOnTop -MaximizeBox -MinimizeBox
 
 startCaliper() {
