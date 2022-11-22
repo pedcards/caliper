@@ -36,11 +36,18 @@ Gui, MainGUI:+AlwaysOnTop -MaximizeBox -MinimizeBox
 WinWaitClose, % GuiTitle
 ExitApp
 
+/*;	====================================================================================================================
+*/
 startCaliper() {
+/*	Start drawing new caliper line based on lines present
+		0: Start first line (X1)
+		1: Start second line
+		2+: Both lines present, grab something
+*/
 	global calArray, active_Draw
 	active_Draw := 1
 	
-	if (calArray.length()=2) {															; Calipers present, grab something
+	if (calArray.length()=2) {															; Both calipers present, grab something
 		MouseGetPos, mx, my
 		ToolTip, Grab this
 		calArray.RemoveAt(FindClosest(mx,my))
@@ -52,12 +59,17 @@ startCaliper() {
 }
 
 dropCaliper() {
+/*	Plunk new caliper line at last mouse position
+*/
 	global calArray, mLast
-	calArray.push(mLast)                                                                ; Drop caliper line
+	calArray.push(mLast)
 	Return
 }
 
 makeCaliper() {
+/*	Make caliper lines based on prev lines and new position
+	Hline if more than one line on the field
+*/
 	global GdipOBJ, active_Draw, calArray, mLast, scale
 
 	MouseGetPos,mx,my
@@ -85,6 +97,8 @@ makeCaliper() {
 }
 
 drawCalipers() {
+/*	Draw all caliper lines from calArray
+*/
 	global GdipOBJ, calArray
 
 	Gdip_GraphicsClear(GdipOBJ.G)
@@ -96,6 +110,8 @@ drawCalipers() {
 }
 
 drawVline(X) {
+/*	Draw vertical line at X
+*/
 	global GdipOBJ
 
 	Gdip_DrawLine(GdipOBJ.G, GdipOBJ.Pen, X, GdipOBJ.Y, X, GdipOBJ.H)
@@ -103,6 +119,8 @@ drawVline(X) {
 }
 
 drawHline(x1,x2,y) {
+/*	Draw horizontal line
+*/
 	global GdipOBJ
 	
 	Gdip_DrawLine(GdipOBJ.G, GdipOBJ.Pen, x1, y, x2, y)
@@ -110,6 +128,8 @@ drawHline(x1,x2,y) {
 }
 
 Calibrate() {
+/*	Calibration window to calculate scale
+*/
 	global calArray, scale
 
 	Gui, cWin:Add, Text, w200 Center, Select calibration measurement
@@ -150,6 +170,8 @@ Calibrate() {
 }
 
 March() {
+/*	March out caliper lines based on X1-X2
+*/
 	global calArray
 
 	if (calArray.length()<2) {
@@ -164,6 +186,9 @@ March() {
 }
 
 FindClosest(mx,my) {
+/*	Check if any caliper lines within threshold distance
+	Return key num for match
+*/
 	global calArray
 	
 	threshold := 20
