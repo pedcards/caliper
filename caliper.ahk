@@ -38,7 +38,7 @@ ExitApp
 
 /*;	====================================================================================================================
 */
-startCaliper() {
+clickCaliper() {
 /*	Start drawing new caliper line based on lines present
 		0: Start first line (X1)
 		1: Start second line
@@ -203,7 +203,7 @@ FindClosest(mx,my) {
 #If (active_Draw=0) 
 ^LButton::
 {
-	startCaliper()
+	clickCaliper()
 	Return
 }
 
