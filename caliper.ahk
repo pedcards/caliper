@@ -196,7 +196,7 @@ FindClosest(mx,my) {
 	
 	for key,val in calArray {
 		if Abs(val.X-mx) < threshold {
-			best := key
+			Return key																	; Return early if hit
 		}
 	}
 	if (calArray.Length()=2) {
@@ -209,7 +209,7 @@ FindClosest(mx,my) {
 					. "Mid: "  hMid "," calArray[1].X + hMid "`n"
 		}
 	}
-	Return best
+	Return
 }
 
 #If (active_Draw=0) 
