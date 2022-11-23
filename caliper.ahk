@@ -50,9 +50,16 @@ clickCaliper() {
 	if (calArray.length()=2) {															; Both calipers present, grab something
 		MouseGetPos, mx, my
 		ToolTip, Grab this
-		if (best:=FindClosest(mx,my)) {
+		best:=FindClosest(mx,my)
+		if best is Integer 
+		{
 			calArray.RemoveAt(best)														; Remove this position, makes live
-		} else {
+		}
+		else if (best="Y") {
+			MsgBox grab Hline
+			Return
+		}
+		else {
 			Return																		; Not close, ignore
 		}
 	}
