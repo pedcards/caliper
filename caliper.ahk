@@ -34,9 +34,6 @@ Gui, MainGUI:Add, Button, gMarch , March
 Gui, MainGUI:Show, x1600 w120, % GuiTitle
 Gui, MainGUI:+AlwaysOnTop -MaximizeBox -MinimizeBox
 
-WinWaitClose, % GuiTitle
-ExitApp
-
 /*;	====================================================================================================================
 */
 clickCaliper() {
