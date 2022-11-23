@@ -55,8 +55,8 @@ clickCaliper() {
 		{
 			calArray.RemoveAt(best)														; Remove this position, makes live
 		}
-		else if (best="Y") {
-			MsgBox grab Hline
+		else if (best="H") {
+			SetTimer, dragCaliper, 50
 			Return
 		}
 		else {
@@ -220,7 +220,7 @@ FindClosest(mx,my) {
 			x1 := calArray[2].X
 		}
 		if (mx > x1) && (mx < x2) {														; between X1-X2
-			Return "Y"
+			Return "H"
 		}
 	}
 	Return
