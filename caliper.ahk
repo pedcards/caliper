@@ -199,6 +199,16 @@ FindClosest(mx,my) {
 			best := key
 		}
 	}
+	if (calArray.Length()=2) {
+		if Abs(calArray[2].Y-my) < threshold {
+			hMid := (calArray[2].X-calArray[1].X)/2
+			hLength := h
+			MsgBox % mx "," my "`n"
+					. "1: " calArray[1].X "," calArray[1].Y "`n"
+					. "2: " calArray[2].X "," calArray[2].Y "`n"
+					. "Mid: "  hMid "," calArray[1].X + hMid "`n"
+		}
+	}
 	Return best
 }
 
