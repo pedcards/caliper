@@ -84,7 +84,7 @@ makeCaliper() {
 		dx := Abs(calArray[1].X - mx)
 		drawHline(calArray[1].x,mx,my)
 		ms := round(dx/scale)
-		bpm := round(60000/ms)
+		bpm := round(60000/ms,1)
 		ToolTip, % (scale="") ? dx " px" : ms " ms`n" bpm " bpm"
 	}
 	if (num=2) {																		; Done when second line drops
