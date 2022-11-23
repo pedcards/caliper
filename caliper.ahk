@@ -200,13 +200,17 @@ FindClosest(mx,my) {
 		}
 	}
 	if (calArray.Length()=2) {
-		if Abs(calArray[2].Y-my) < threshold {
-			hMid := (calArray[2].X-calArray[1].X)/2
-			hLength := h
-			MsgBox % mx "," my "`n"
-					. "1: " calArray[1].X "," calArray[1].Y "`n"
-					. "2: " calArray[2].X "," calArray[2].Y "`n"
-					. "Mid: "  hMid "," calArray[1].X + hMid "`n"
+		if Abs(calArray[2].Y-my) > threshold {
+			Return																		; not near Hline
+		}
+		x1 := calArray[1].X
+		x2 := calArray[2].X
+		if (x1>x2) {
+			x2 := x1
+			x1 := calArray[2].X
+		}
+		if (mx > x1) && (mx < x2) {														; between X1-X2
+			Return "Y"
 		}
 	}
 	Return
