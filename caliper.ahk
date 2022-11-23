@@ -48,7 +48,11 @@ clickCaliper() {
 	if (calArray.length()=2) {															; Both calipers present, grab something
 		MouseGetPos, mx, my
 		ToolTip, Grab this
-		calArray.RemoveAt(FindClosest(mx,my))
+		if (best:=FindClosest(mx,my)) {
+			calArray.RemoveAt(best)														; Remove this position, makes live
+		} else {
+			Return																		; Not close, ignore
+		}
 	}
 
 	SetTimer, makeCaliper,50
