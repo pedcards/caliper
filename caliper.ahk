@@ -192,8 +192,8 @@ FindClosest(mx,my) {
 	Return key num for match
 */
 	global calArray
+	threshold := 5
 	
-	threshold := 20
 	for key,val in calArray {
 		if Abs(val.X-mx) < threshold {
 			best := key
