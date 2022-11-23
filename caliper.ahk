@@ -211,6 +211,7 @@ FindClosest(mx,my) {
 
 #If (active_Draw=1)
 LButton Up::
+^LButton Up::
 {
 	dropCaliper()
 	Return
