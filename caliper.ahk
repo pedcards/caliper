@@ -108,6 +108,37 @@ makeCaliper() {
 	Return
 }
 
+dragCaliper() {
+/*	Have grabbed Hline
+*/
+	global GdipOBJ, calArray, mLast
+
+	x1 := mLast.X																		; previous coords
+	y1 := mLast.Y
+	MouseGetPos,mx,my																	; new coords
+	mLast := {X:mx,Y:my}
+
+	dx := mx-x1
+	dy := my-y1
+
+	for key in calArray
+	{
+		calArray[key].X := calArray[key].X + dx
+		calArray[key].Y := calArray[key].Y + dy
+	}
+
+	drawCalipers()
+	drawHline(calArray[1].x,mx,my)
+	UpdateLayeredWindow(GdipOBJ.hwnd, GdipOBJ.hdc)										; Refresh viewport
+
+	Return
+}
+
+dragRelease() {
+	SetTimer, dragCaliper, off
+	Return
+}
+
 drawCalipers() {
 /*	Draw all caliper lines from calArray
 */
@@ -230,6 +261,12 @@ FindClosest(mx,my) {
 ^LButton::
 {
 	clickCaliper()
+	Return
+}
+LButton Up::
+^LButton Up::
+{
+	dragRelease()
 	Return
 }
 
