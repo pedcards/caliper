@@ -43,7 +43,6 @@ clickCaliper() {
 		2+: Both lines present, grab something
 */
 	global calArray, active_Draw
-	active_Draw := 1
 	
 	if (calArray.length()=2) {															; Both calipers present, grab something
 		MouseGetPos, mx, my
@@ -55,6 +54,7 @@ clickCaliper() {
 		}
 	}
 
+	active_Draw := 1
 	SetTimer, makeCaliper,50
 
 	Return
