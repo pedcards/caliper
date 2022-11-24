@@ -18,6 +18,7 @@ SetTitleMatchMode, 2
 
 GdipOBJ:={X: 0 ,Y: 0 ,W: A_ScreenWidth, H: A_ScreenHeight } 
 active_Draw:=0
+active_Move:=0
 calArray := {}
 mLast := {}
 scale := ""
@@ -247,6 +248,14 @@ FindClosest(mx,my) {
 ^LButton::
 {
 	clickCaliper()
+	Return
+}
+
+#If, (active_Move=1)
+LButton Up::
+^LButton Up::
+{
+	moveRelease()
 	Return
 }
 
