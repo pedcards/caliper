@@ -110,34 +110,35 @@ makeCaliper() {
 	Return
 }
 
-dragCaliper() {
-/*	Have grabbed Hline
+moveCaliper() {
+/*	Have grabbed X1 from dropped caliper
 */
-	global GdipOBJ, calArray, mLast
+	global GdipOBJ, calArray, mLast, scale
 
-	x1 := mLast.X																		; previous coords
-	y1 := mLast.Y
-	MouseGetPos,mx,my																	; new coords
+	MouseGetPos,mx,my
+	dx := mx-mLast.X
+	dy := my-mLast.Y
 	mLast := {X:mx,Y:my}
-
-	dx := mx-x1
-	dy := my-y1
 
 	for key in calArray
 	{
-		calArray[key].X := calArray[key].X + dx
-		calArray[key].Y := calArray[key].Y + dy
+		calArray[key].X += dx
+		calArray[key].Y += dy
 	}
 
 	drawCalipers()
-	drawHline(calArray[1].x,mx,my)
-	UpdateLayeredWindow(GdipOBJ.hwnd, GdipOBJ.hdc)										; Refresh viewport
+	drawHline(calArray[1].x,calArray[2].x,my)
+	UpdateLayeredWindow(GdipOBJ.hwnd, GdipOBJ.hdc)
 
 	Return
 }
 
-dragRelease() {
-	SetTimer, dragCaliper, off
+moveRelease() {
+/*	Drop the set of calipers being moved
+*/
+	global active_Move
+	active_Move=0
+	SetTimer, moveCaliper, Off
 	Return
 }
 
