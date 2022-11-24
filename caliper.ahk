@@ -51,16 +51,16 @@ clickCaliper() {
 		MouseGetPos, mx, my
 		ToolTip, Grab this
 		best:=FindClosest(mx,my)
-		if best is Integer 
+		Switch best
 		{
-			calArray.RemoveAt(best)														; Remove this position, makes live
-		}
-		else if (best="H") {
-			SetTimer, dragCaliper, 50
-			Return
-		}
-		else {
-			Return																		; Not close, ignore
+			Case 1:
+				moveCaliper()
+				Return
+			Case 2:
+				calArray.RemoveAt(best)													; Release this position, makes live
+
+			Default:
+				Return																	; Not close, ignore
 		}
 	}
 
