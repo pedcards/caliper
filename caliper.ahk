@@ -46,16 +46,17 @@ clickCaliper() {
 		1: Start second line
 		2+: Both lines present, grab something
 */
-	global calArray, active_Draw
+	global calArray, active_Draw, active_Move, mLast
 	
 	if (calArray.length()=2) {															; Both calipers present, grab something
 		MouseGetPos, mx, my
-		ToolTip, Grab this
+		mLast := {X:mx,Y:my}
 		best:=FindClosest(mx,my)
 		Switch best
 		{
 			Case 1:
-				moveCaliper()
+				active_Move := 1
+				SetTimer, moveCaliper, 50
 				Return
 			Case 2:
 				calArray.RemoveAt(best)													; Release this position, makes live
