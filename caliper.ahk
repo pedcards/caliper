@@ -102,6 +102,7 @@ makeCaliper() {
 	if (num=2) {																		; Done when second line drops
 		active_Draw := 0
 		SetTimer, makeCaliper, Off
+		reorderCalipers()
 	}
 
 	drawVline(mx)																		; Draw live caliper
@@ -170,6 +171,19 @@ drawHline(x1,x2,y) {
 	global GdipOBJ
 	
 	Gdip_DrawLine(GdipOBJ.G, GdipOBJ.Pen, x1, y, x2, y)
+	Return
+}
+
+reorderCalipers() {
+/*	Make sure that X1 always smaller than X2
+*/
+	global calArray
+
+	if (calArray[1].X > calArray[2].X) {
+		t := calArray[1]
+		calArray[1] := calArray[2]
+		calArray[2] := t
+	}
 	Return
 }
 
