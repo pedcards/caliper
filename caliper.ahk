@@ -249,12 +249,6 @@ FindClosest(mx,my) {
 	clickCaliper()
 	Return
 }
-LButton Up::
-^LButton Up::
-{
-	dragRelease()
-	Return
-}
 
 #If (active_Draw=1)
 LButton Up::
