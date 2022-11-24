@@ -240,20 +240,6 @@ FindClosest(mx,my) {
 			Return key																	; Return early if hit
 		}
 	}
-	if (calArray.Length()=2) {
-		if Abs(calArray[2].Y-my) > threshold {
-			Return																		; not near Hline
-		}
-		x1 := calArray[1].X
-		x2 := calArray[2].X
-		if (x1>x2) {
-			x2 := x1
-			x1 := calArray[2].X
-		}
-		if (mx > x1) && (mx < x2) {														; between X1-X2
-			Return "H"
-		}
-	}
 	Return
 }
 
