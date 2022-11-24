@@ -95,9 +95,7 @@ makeCaliper() {
 	if (num) {																			; Draw Hline when first line dropped
 		dx := Abs(calArray[1].X - mx)
 		drawHline(calArray[1].x,mx,my)
-		ms := round(dx/scale)
-		bpm := round(60000/ms,1)
-		ToolTip, % (scale="") ? dx " px" : ms " ms`n" bpm " bpm"
+		scaleTooltip(dx)
 	}
 	if (num=2) {																		; Done when second line drops
 		active_Draw := 0
@@ -127,6 +125,7 @@ moveCaliper() {
 		calArray[key].Y += dy
 	}
 
+	scaleTooltip(calArray[2].X-calArray[1].X)
 	drawCalipers()
 	drawHline(calArray[1].x,calArray[2].x,my)
 	UpdateLayeredWindow(GdipOBJ.hwnd, GdipOBJ.hdc)
@@ -140,6 +139,7 @@ moveRelease() {
 	global active_Move
 	active_Move=0
 	SetTimer, moveCaliper, Off
+	ToolTip
 	Return
 }
 
@@ -187,6 +187,13 @@ reorderCalipers() {
 	Return
 }
 
+scaleTooltip(dx) {
+	global scale
+	ms := round(dx/scale)
+	bpm := round(60000/ms,1)
+	ToolTip, % (scale="") ? dx " px" : ms " ms`n" bpm " bpm"
+	Return
+}
 Calibrate() {
 /*	Calibration window to calculate scale
 */
