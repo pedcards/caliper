@@ -239,16 +239,16 @@ Calibrate() {
 March() {
 /*	March out caliper lines based on X1-X2
 */
-	global calArray
+	global calArray, GdipOBJ
 
 	if (calArray.length()<2) {
 		Return
 	}
-	if (calArray[1].X > calArray[2].X) {
-		t := calArray.RemoveAt(1)
-		calArray.Push(t)
+	dx := calArray[2].X-calArray[1].X
+	while (x < GdipOBJ.W) {
+
 	}
-	dx := Abs(calArray[2].X-calArray[1].X)
+
 	Return
 }
 
