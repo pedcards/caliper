@@ -19,6 +19,7 @@ SetTitleMatchMode, 2
 GdipOBJ:={X: 0 ,Y: 0 ,W: A_ScreenWidth, H: A_ScreenHeight } 
 active_Draw:=0
 active_Move:=0
+active_March:=0
 calArray := {}
 mLast := {}
 scale := ""
@@ -31,7 +32,7 @@ GdipOBJ.Pen:=New_Pen("FF0000",,1)
 
 Gui, MainGUI:Add, Button, gclickCaliper , New caliper
 Gui, MainGUI:Add, Button, gCalibrate , Calibrate
-Gui, MainGUI:Add, Button, gMarch , March
+Gui, MainGUI:Add, Button, vactive_March gToggleMarch, % "  March  "
 Gui, MainGUI:Show, x1600 w120, % GuiTitle
 Gui, MainGUI:+AlwaysOnTop -MaximizeBox -MinimizeBox
 
@@ -236,10 +237,15 @@ Calibrate() {
 	}
 }
 
-March() {
-/*	March out caliper lines based on X1-X2
+toggleMarch() {
+/*	Toggle between "March" and "Meausre" button
 */
-	global calArray, GdipOBJ
+	global active_March, MainGUI
+	active_March := !active_March
+	GuiControl, MainGUI:Text, active_March
+		, % (active_March) ? "Measure" : "March"
+	Return
+}
 
 	if (calArray.length()<2) {
 		Return
