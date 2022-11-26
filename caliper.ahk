@@ -85,10 +85,14 @@ makeCaliper() {
 /*	Make caliper lines based on prev lines and new position
 	Hline if more than one line on the field
 */
-	global GdipOBJ, active_Draw, calArray, mLast, scale
+	global GdipOBJ, active_Draw, active_March, calArray, mLast, scale
 
 	MouseGetPos,mx,my
 	mLast := {X:mx,Y:my}
+
+	if (active_March) {
+		calMarch()
+	}
 
 	drawCalipers()
 
@@ -247,12 +251,30 @@ toggleMarch() {
 	Return
 }
 
+calMarch() {
+/*	March out caliper lines relative to X1
+*/
+	global calArray, GdipOBJ, active_March, mLast
+	grip:=2
+
 	if (calArray.length()<2) {
 		Return
 	}
-	dx := calArray[2].X-calArray[1].X
-	while (x < GdipOBJ.W) {
+	lastX := mLast.X																	; last known position
+	fullX := lastX-calArray[1].X														; distance from X1
+	steps := grip-1																		; divisor
+	dx := fullX/steps																	; dx between each caliper
 
+	calArray.RemoveAt(2, calArray.length())												; clear everything above X1
+
+	while (lastX < GdipOBJ.W) {															; add calipers to the right
+		lastX += dx
+		calArray.Push({X:lastX})
+	}
+	lastX := calArray[1].X																; add calipers to the left
+	while (lastX > GdipOBJ.X) {
+		lastX -= dx
+		calArray.Push({X:lastX})
 	}
 
 	Return
