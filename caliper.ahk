@@ -193,14 +193,17 @@ reorderCalipers() {
 }
 
 scaleTooltip(dx) {
+/*	Display tooltip measurements
+*/
 	global scale
 	ms := round(dx/scale)
 	bpm := round(60000/ms,1)
 	ToolTip, % (scale="") ? dx " px" : ms " ms`n" bpm " bpm"
 	Return
 }
+
 Calibrate() {
-/*	Calibration window to calculate scale
+/*	Calibration GUI to calculate scale
 */
 	global calArray, scale
 
