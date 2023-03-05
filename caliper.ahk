@@ -6,6 +6,7 @@
 	March-out with drag of any line
 */
 
+#Requires AutoHotkey v1.1
 #NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 #SingleInstance Force  ; only allow one running instance per user
 #MaxMem 128
