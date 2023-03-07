@@ -32,8 +32,9 @@ GdipOBJ := Layered_Window_SetUp(4,GdipOBJ.X,GdipOBJ.Y,GdipOBJ.W,GdipOBJ.H,2,"-Ca
 GdipOBJ.Pen:=New_Pen("FF0000",,1)
 
 Gui, MainGUI:Add, Button, gclickCaliper , New caliper
+Gui, MainGUI:Add, Button,  , Clear caliper
 Gui, MainGUI:Add, Button, gCalibrate , Calibrate
-Gui, MainGUI:Add, Button, vactive_March gToggleMarch, % "  March  "
+Gui, MainGUI:Add, Checkbox, vactive_March gToggleMarch , March off
 Gui, MainGUI:Show, x1600 w120, % GuiTitle
 Gui, MainGUI:+AlwaysOnTop -MaximizeBox -MinimizeBox
 
@@ -251,7 +252,7 @@ toggleMarch() {
 	global active_March, MainGUI
 	active_March := !active_March
 	GuiControl, MainGUI:Text, active_March
-		, % (active_March) ? "Measure" : "March"
+		, % (active_March) ? "March on" : "March off"
 	Return
 }
 
