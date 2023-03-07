@@ -17,13 +17,13 @@ CoordMode, Mouse, Screen
 SetWorkingDir %A_ScriptDir%
 SetTitleMatchMode, 2
 
-GdipOBJ:={X: 0 ,Y: 0 ,W: A_ScreenWidth, H: A_ScreenHeight } 
-active_Draw:=0
-active_Move:=0
-active_March:=0
-calArray := {}
-mLast := {}
-scale := ""
+GdipOBJ:={X: 0 ,Y: 0 ,W: A_ScreenWidth, H: A_ScreenHeight }								; Screen overlay object
+active_Draw:=0																			; <= These need to remain simple vars
+active_Move:=0																			; <= so they can be used in GUI 
+active_March:=0																			; <= commands.
+calArray := {}																			; Array of X positions
+mLast := {}																				; To store mouse X,Y coords
+scale := ""																				; Multiplier for calibration
 
 GuiTitle := "TC Calipers"
 Gui, 1: -Caption +E0x80000 +LastFound +AlwaysOnTop +ToolWindow +OwnDialogs
