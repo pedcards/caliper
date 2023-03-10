@@ -87,7 +87,7 @@ makeCaliper() {
 /*	Make caliper lines based on prev lines and new position
 	Hline if more than one line on the field
 */
-	global GdipOBJ, active_Draw, active_March, calArray, mLast, scale
+	global GdipOBJ, active_Draw, active_March, calArray, mLast
 
 	MouseGetPos,mx,my
 	mLast := {X:mx,Y:my}
@@ -119,7 +119,7 @@ makeCaliper() {
 moveCaliper() {
 /*	Have grabbed X1 from dropped caliper
 */
-	global GdipOBJ, calArray, mLast, scale
+	global GdipOBJ, calArray, mLast
 
 	MouseGetPos,mx,my
 	dx := mx-mLast.X
